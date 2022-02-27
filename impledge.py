@@ -30,30 +30,30 @@ class Trie:
             current = current.children[letter]
         return current.isTerminal
 
-    # Returns how many sub-words can make up the word, as well as the sub-words that make up the big word
+    
     def decompose(self, word):
-        # Do not accept the empty string ''
+        
         if not word:
             return 0, []
-        # Check if we've seen this word before
+        
         if word in self.counts:
             return self.counts[word]
-        # If not then we need to start traversing the trie
+        
         current = self.root
         for index, letter in enumerate(word):
             if letter not in current.children:
                 return 0, []
             current = current.children[letter]
             if current.isTerminal:
-                suffix = word[index + 1:]  # Get the suffix
-                suffix_count, suffix_list = self.decompose(suffix)  # decompose the suffix
-                self.counts[suffix] = suffix_count, suffix_list  # store count for memoization
-                if suffix_count:  # if suffix is decomposable
-                    # add prefix to suffix list, add 1 to suffix count and return
+                suffix = word[index + 1:]  
+                suffix_count, suffix_list = self.decompose(suffix)  
+                self.counts[suffix] = suffix_count, suffix_list  
+                if suffix_count:  
+                    
                     return 1 + suffix_count, [word[:index + 1]] + suffix_list
         return current.isTerminal, [word]
 
-    # Returns (isCompound, # small words, list of small words)
+    
     def getCompound(self, word):
         decompose_num, decompose_list = self.decompose(word)
         return decompose_num > 1, decompose_num, decompose_list
@@ -88,7 +88,7 @@ def example(filename='words.txt'):
     trie, words = load(filename)
     compoundList = processList(getCompoundList(trie, words))
 
-    # returns prints longest compound word if it exists
+    
     longestWord = compoundList[0][0]
     secondLongestWord = compoundList[1][0]
 
